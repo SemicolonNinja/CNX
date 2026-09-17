@@ -139,4 +139,9 @@
 
   if (!location.hash) location.hash = "#/edu";
   render();
-});
+}
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", startEnumChrome);
+} else {
+  startEnumChrome();
+}

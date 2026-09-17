@@ -10,13 +10,30 @@
     "app-talent-07.js",
     "app-talent-08.js"
   ];
-  function next(i) {
-    if (i >= files.length) return;
+  // Chunks are one program split across files. Fetch and run them as a single
+  // script so function bodies that span files stay valid.
+  function fail(file, err) {
+    console.error("Failed to load", file, err);
+  }
+  function inject(source) {
     var s = document.createElement("script");
-    s.src = files[i];
-    s.onload = function () { next(i + 1); };
-    s.onerror = function () { console.error("Failed to load", files[i]); };
+    s.textContent = source;
     document.body.appendChild(s);
   }
-  next(0);
+  function next(i, parts) {
+    if (i >= files.length) {
+      inject(parts.join("\n"));
+      return;
+    }
+    fetch(files[i]).then(function (res) {
+      if (!res.ok) throw new Error(res.status + " " + res.statusText);
+      return res.text();
+    }).then(function (text) {
+      parts.push(text);
+      next(i + 1, parts);
+    }).catch(function (err) {
+      fail(files[i], err);
+    });
+  }
+  next(0, []);
 })();

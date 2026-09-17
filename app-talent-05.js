@@ -153,7 +153,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+function startEnumChrome() {
   document.querySelectorAll(".demo-app").forEach((b) => b.onclick = () => {
     go(b.dataset.app === "edu" ? "#/edu" : "#/talent");
   });
