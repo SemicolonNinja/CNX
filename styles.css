@@ -1271,7 +1271,9 @@ button,
   .seg-vis button,
   .pager .navbtns button,
   .upload-btn,
-  #upload-btn {
+  #upload-btn,
+  .t-item,
+  .tab {
     min-height: 44px;
     min-width: 44px;
   }
