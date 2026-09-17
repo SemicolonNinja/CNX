@@ -1237,3 +1237,140 @@ input[type="number"] { width: 100%; border: 1px solid var(--line); border-radius
 @media (max-width: 720px) {
   .q-row { grid-template-columns: 1fr 1fr; }
 }
+
+/* Phone: 44px tap targets, full-width CTAs, educator rail as bottom nav */
+button,
+.btn,
+.seg,
+.range-pill,
+.demo-app,
+.filter-btn,
+.tab,
+.t-item,
+.rail-item,
+.loc-seg button,
+.seg-vis button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary,
+.btn-ghost,
+.btn-reserved {
+  min-height: 44px;
+}
+
+@media (max-width: 720px) {
+  .btn-primary,
+  .btn-ghost,
+  .btn-reserved,
+  .seg,
+  .range-pill,
+  .filter-btn,
+  .loc-seg button,
+  .seg-vis button,
+  .pager .navbtns button,
+  .upload-btn,
+  #upload-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .demo-bar {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  .demo-app {
+    padding: 8px 12px;
+    min-height: 32px;
+  }
+
+  .rail {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: calc(64px + env(safe-area-inset-bottom, 0px));
+    flex-direction: row;
+    border-right: 0;
+    border-top: 1px solid var(--line);
+    padding: 4px 6px env(safe-area-inset-bottom, 0px);
+    align-items: center;
+  }
+  .mark {
+    width: 36px;
+    height: 36px;
+    margin: 0 4px 0 0;
+    flex-shrink: 0;
+  }
+  .rail-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: space-around;
+    gap: 0;
+  }
+  .rail-item {
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+    flex: 1;
+    font-size: 9px;
+    padding: 4px 2px;
+  }
+  .rail-foot {
+    flex-direction: row;
+    margin-top: 0;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .app {
+    margin-left: 0;
+    padding: 16px 16px 88px;
+  }
+
+  .top,
+  .t-top,
+  .t-title-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .top-actions,
+  .t-title-actions,
+  .cta-row,
+  .modal footer,
+  .cal-bar {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .top .btn-primary,
+  .top-actions .btn,
+  .t-title-actions .btn,
+  .cta-row .btn,
+  .modal footer .btn,
+  .modal footer .btn-primary,
+  .modal footer .btn-ghost {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+
+  .toolbar,
+  .t-toolbar,
+  .cal-bar {
+    align-items: stretch;
+  }
+  .search,
+  .search.t-search,
+  .t-search {
+    width: 100%;
+    height: 44px;
+  }
+  .view-toggle button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .chat {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
