@@ -1,0 +1,9 @@
+{
+  "name": "Enum Events prototype",
+  "terminals": [
+    {
+      "name": "Preview",
+      "command": "python3 .preview-server.py"
+    }
+  ]
+}
