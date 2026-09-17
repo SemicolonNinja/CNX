@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendar | Enumverse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="demo-bar">
+    <span class="demo-label">As-built + overlay</span>
+    <button type="button" class="demo-app on" data-app="edu">Educator</button>
+    <button type="button" class="demo-app" data-app="talent">Talent</button>
+    <span class="demo-note">JI switches apps · Events tabs Discover / Going / Past · Calendar stays as-built · PRD overlays on the same chrome</span>
+  </div>
+
+  <div class="ji-menu hidden" id="ji-menu">
+    <p>Switch workspace</p>
+    <button type="button" data-role="edu">Organization</button>
+    <button type="button" data-role="talent">Talent</button>
+  </div>
+
+  <div id="edu-shell">
+  <aside class="rail">
+    <div class="mark" id="edu-ji" title="Switch Organization / Talent">JI</div>
+    <nav class="rail-nav">
+      <button class="rail-item" type="button" title="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+        Home
+      </button>
+      <button class="rail-item" type="button" title="Team">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="16" cy="9" r="2.5"/><path d="M4 19a5 5 0 0 1 10 0M14 19a4 4 0 0 1 6 0"/></svg>
+        Team
+      </button>
+      <button class="rail-item active" type="button" title="Events">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>
+        Events
+      </button>
+      <button class="rail-item" type="button" title="Community">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 8h7a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3h-2l-3 2v-2H8a3 3 0 0 1-3-3v-3a3 3 0 0 1 3-3z"/></svg>
+        Community
+      </button>
+      <button class="rail-item" type="button" title="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 21h4"/></svg>
+        Notifica.
+      </button>
+      <button class="rail-item" type="button" title="Profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+        Profile
+      </button>
+      <button class="rail-item" type="button" title="People &amp; settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.2 6.2 7.6 7.6M16.4 16.4l1.4 1.4M17.8 6.2 16.4 7.6M7.6 16.4 6.2 17.8"/></svg>
+        People &amp;…
+      </button>
+    </nav>
+    <div class="rail-foot">
+      <div class="avatar">JB<span class="dot"></span></div>
+      <button class="rail-item logout" type="button" title="Log out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 7V5a2 2 0 0 1 2-2h8v18h-8a2 2 0 0 1-2-2v-2"/><path d="M3 12h12M12 9l3 3-3 3"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="app" id="view-edu-home">
+    <div class="top">
+      <div>
+        <h1>Calendar</h1>
+        <p>View and track your events, meetings and availability.</p>
+      </div>
+      <button class="btn btn-primary" id="create-btn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Create event
+      </button>
+    </div>
+
+    <section class="cards">
+      <article class="card">
+        <div class="card-head">
+          <span class="icon-chip blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+          </span>
+          All events
+        </div>
+        <div class="big" id="stat-total">0</div>
+        <div class="submetrics">
+          <div>Upcoming: <span id="stat-up">0</span></div>
+          <div>Ongoing: <span id="stat-on">0</span></div>
+          <div>Ended: <span id="stat-en">0</span></div>
+          <div>Cancelled: <span id="stat-ca">0</span></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="card-head">
+          <span class="icon-chip green">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3"/><path d="M5 19a7 7 0 0 1 14 0"/></svg>
+          </span>
+          All participants
+        </div>
+        <div class="big" id="stat-people">0</div>
+        <div class="submetrics spread">
+          <div>Invited: <span id="stat-inv">0</span></div>
+          <div>Registered: <span id="stat-reg">0</span></div>
+        </div>
+      </article>
+    </section>
+
+    <div class="toolbar" id="list-toolbar">
+      <div class="tabs">
+        <button class="tab active" type="button" data-tab="Upcoming">Upcoming <span class="count">0</span></button>
+        <button class="tab" type="button" data-tab="Ongoing">Ongoing <span class="count">0</span></button>
+        <button class="tab" type="button" data-tab="Ended">Ended <span class="count">0</span></button>
+        <button class="tab" type="button" data-tab="Cancelled">Cancelled <span class="count">0</span></button>
+      </div>
+      <div class="tools">
+        <div class="filter-root">
+          <button class="filter-btn" id="filter-btn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16l-6 8v5l-4 1v-6z"/></svg>
+            Filter by
+          </button>
+          <div class="menu hidden" id="filter-menu">
+            <div class="filter-row">
+              <button type="button" data-sub="type">Type of event <span>›</span></button>
+              <div class="submenu hidden" id="sub-type">
+                <button type="button" data-type="Public">Public</button>
+                <button type="button" data-type="Private">Private</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <button type="button" data-sub="loc">Location <span>›</span></button>
+              <div class="submenu hidden" id="sub-loc">
+                <button type="button" data-loc="Physical">Physical</button>
+                <button type="button" data-loc="Virtual">Virtual</button>
+                <button type="button" data-loc="Hybrid">Hybrid</button>
+              </div>
+            </div>
+            <div class="filter-row">
+              <button type="button" data-sub="date">Date <span>›</span></button>
+              <div class="submenu hidden" id="sub-date">
+                <button type="button" data-date="Today">Today</button>
+                <button type="button" data-date="Yesterday">Yesterday</button>
+                <button type="button" data-date="This week">This week</button>
+                <button type="button" data-date="Last week">Last week</button>
+                <button type="button" data-date="This month">This month</button>
+                <button type="button" data-date="Last month">Last month</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input class="search" id="search" placeholder="Search event" />
+        <div class="view-toggle" data-toggle="list">
+          <button class="active" id="btn-list" type="button" title="List">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="16" height="3" rx="1"/><rect x="4" y="10.5" width="16" height="3" rx="1"/><rect x="4" y="16" width="16" height="3" rx="1"/></svg>
+          </button>
+          <button id="btn-cal" type="button" title="Calendar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="list-view">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Event name / description</th>
+              <th>Type of event</th>
+              <th>Location</th>
+              <th>Start date/time</th>
+              <th>End date/time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="pager">
+          <div>
+            <span id="page-label">Page 1 of 1</span>
+            <span class="dot-sep">·</span>
+            <select id="page-size" aria-label="Rows per page">
+              <option>10</option>
+              <option>25</option>
+            </select>
+            per page
+          </div>
+          <div class="pager-mid"><button class="page-chip" id="page-chip" type="button">1</button></div>
+          <div class="navbtns">
+            <button id="prev" type="button">← Previous</button>
+            <button id="next" type="button">Next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cal-view" class="hidden">
+      <div class="cal-layout" id="cal-layout">
+        <div class="cal-times" id="cal-times"></div>
+        <div class="cal-main">
+          <div class="cal-bar">
+            <button class="seg" id="today-btn" type="button">Today</button>
+            <div class="chev-group">
+              <button class="seg" id="cal-prev" type="button" aria-label="Previous">‹</button>
+              <button class="seg" id="cal-next" type="button" aria-label="Next">›</button>
+            </div>
+            <button class="range-pill" id="range-label" type="button">Sep 13 – 19, 2026</button>
+            <div class="spacer"></div>
+            <div class="legend">
+              <span><i class="dot up"></i>Upcoming</span>
+              <span><i class="dot on"></i>Ongoing</span>
+              <span><i class="dot en"></i>Ended</span>
+            </div>
+            <select class="seg" id="cal-mode" aria-label="Calendar range">
+              <option value="day">Day</option>
+              <option value="week" selected>Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
+            <div class="view-toggle" data-toggle="cal">
+              <button id="btn-list-2" type="button" title="List">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="5" width="16" height="3" rx="1"/><rect x="4" y="10.5" width="16" height="3" rx="1"/><rect x="4" y="16" width="16" height="3" rx="1"/></svg>
+              </button>
+              <button class="active" id="btn-cal-2" type="button" title="Calendar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="week-grid" id="week-grid"></div>
+          <div class="day-grid hidden" id="day-grid"></div>
+          <div id="month-wrap" class="hidden"></div>
+          <div class="year hidden" id="year-wrap"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <main class="app hidden" id="view-edu-detail">
+    <button class="text-link" type="button" id="back-edu">← Calendar</button>
+    <div class="top">
+      <div>
+        <p class="crumb" id="detail-status"></p>
+        <h1 id="detail-title">Event</h1>
+        <p id="detail-sub"></p>
+      </div>
+      <div class="top-actions">
+        <button class="btn btn-ghost" type="button" id="detail-edit">Edit</button>
+        <button class="btn btn-primary hidden" type="button" id="detail-start-room">Start room</button>
+        <button class="btn btn-ghost" type="button" id="detail-more">⋯</button>
+      </div>
+    </div>
+    <div class="overflow-menu hidden" id="detail-overflow">
+      <button type="button" data-act="checkin">Check in</button>
+      <button type="button" data-act="summary">Summary</button>
+      <button type="button" data-act="grouping">Add to Community</button>
+      <button type="button" data-act="insights">Insights</button>
+      <button type="button" data-act="embed">Copy embed</button>
+      <button type="button" data-act="duplicate">Duplicate</button>
+      <button type="button" data-act="cancel">Cancel event</button>
+      <button type="button" data-act="archive">Archive</button>
+      <button type="button" data-act="delete">Delete event</button>
+    </div>
+    <div class="tabs detail-tabs">
+      <button class="tab active" type="button" data-dtab="overview">Overview</button>
+      <button class="tab" type="button" data-dtab="participants">Participants</button>
+    </div>
+    <section id="panel-overview" class="card pad"></section>
+    <section id="panel-participants" class="hidden">
+      <div class="toolbar">
+        <div class="tabs" id="p-status-tabs"></div>
+        <div class="tools">
+          <input class="search" id="p-search" placeholder="Search name or email" />
+          <button class="btn btn-ghost" type="button" id="p-invite">Invite</button>
+          <button class="btn btn-ghost" type="button" id="p-import">Import CSV</button>
+          <button class="btn btn-ghost" type="button" id="p-export">Export CSV</button>
+          <button class="btn btn-primary" type="button" id="p-message">Send message</button>
+        </div>
+      </div>
+      <div class="table-wrap"><table><thead><tr><th>Person</th><th>Status</th><th>Source</th><th>Ticket</th><th>Delivery</th><th></th></tr></thead><tbody id="p-tbody"></tbody></table></div>
+    </section>
+  </main>
+
+  <main class="app hidden" id="view-edu-checkin">
+    <button class="text-link" type="button" id="back-checkin">← Event</button>
+    <div class="top"><div><h1>Check in</h1><p id="checkin-sub"></p></div></div>
+    <div class="checkin-grid">
+      <article class="card pad">
+        <label>Scan ticket code</label>
+        <input id="scan-code" placeholder="Paste or type ticket code" />
+        <label style="margin-top:10px">Search by name or email</label>
+        <input id="scan-name" placeholder="Ada Okonkwo" />
+        <div class="cta-row" style="margin-top:10px">
+          <button class="btn btn-primary" type="button" id="scan-btn">Check in</button>
+          <button class="btn btn-ghost" type="button" id="scan-camera">Use camera</button>
+        </div>
+        <p class="hint" id="checkin-hint">Camera is simulated. Search always works if the camera is denied.</p>
+        <label class="switch" style="margin-top:10px">Simulate offline
+          <input id="scan-offline" type="checkbox" /><span class="slider"></span>
+        </label>
+      </article>
+      <article class="card pad" id="checkin-flash"></article>
+    </div>
+    <div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Name</th><th>Status</th><th></th></tr></thead><tbody id="checkin-list"></tbody></table></div>
+  </main>
+
+  <main class="app hidden" id="view-edu-summary">
+    <button class="text-link" type="button" id="back-summary">← Event</button>
+    <div class="top"><div><h1>Session summary</h1><p>Draft until you publish. Owners must be people who joined the room.</p></div>
+      <button class="btn btn-ghost" type="button" id="retry-summary">Retry</button>
+      <button class="btn btn-primary" type="button" id="publish-summary">Publish to attendees</button>
+    </div>
+    <div id="summary-body"></div>
+  </main>
+
+  <main class="app hidden" id="view-edu-grouping">
+    <button class="text-link" type="button" id="back-group">← Event</button>
+    <div class="top"><div><h1>Add joiners to Community</h1><p>Only people who joined the room. Reserved-but-absent are not added.</p></div></div>
+    <div class="card pad wizard" id="group-wizard"></div>
+  </main>
+
+  <main class="app hidden" id="view-edu-insights">
+    <button class="text-link" type="button" id="back-insights">← Event</button>
+    <div class="top"><div><h1>Insights</h1><p>Funnel for this event. Embed uses the same door as reserve.</p></div></div>
+    <div class="insights-grid" id="insights-grid"></div>
+    <article class="card pad" style="margin-top:16px">
+      <h3>Team roles</h3>
+      <p class="hint">Owner, host, manager, check-in staff, community moderator. Last owner cannot be removed.</p>
+      <div id="roles-list"></div>
+    </article>
+  </main>
+  </div>
+
+  <div id="talent-shell" class="hidden">
+    <aside class="t-side">
+      <div class="t-brand">
+        <span class="enum-word">enum</span>
+        <button class="ji-chip" type="button" id="talent-ji" title="Switch Organization / Talent">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 5V3h8v2"/></svg>
+        </button>
+      </div>
+      <nav class="t-nav" id="talent-nav">
+        <button class="t-item" type="button" data-tnav="dash">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Dashboard
+        </button>
+        <button class="t-item" type="button" data-tnav="calendar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>
+          Calendar
+        </button>
+        <div class="t-label">Explore</div>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+          Opportunities
+        </button>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5l8 4 8-4v14l-8 4z"/></svg>
+          Courses &amp; programs
+        </button>
+        <div class="t-label">Activity</div>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          Applications
+        </button>
+        <button class="t-item" type="button" data-tnav="events">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+          Events
+        </button>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19a8 8 0 0 1 16 0"/><circle cx="12" cy="8" r="3"/></svg>
+          My Learning
+        </button>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 8h7a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3h-2l-3 2v-2H8a3 3 0 0 1-3-3v-3a3 3 0 0 1 3-3z"/></svg>
+          Community
+        </button>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11h6M12 8v6"/><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+          Assessments
+        </button>
+        <div class="t-label">My account</div>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 21h4"/></svg>
+          Notifications
+        </button>
+        <button class="t-item" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+          Profile
+        </button>
+        <button class="t-item" type="button" data-tnav="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M5 12H3M21 12h-2"/></svg>
+          Settings
+        </button>
+      </nav>
+      <div class="t-user">
+        <div class="avatar">JB</div>
+        <div><strong>James Bond</strong><small>jamesbond@email.com</small></div>
+      </div>
+    </aside>
+
+    <div class="t-main">
+      <header class="t-top">
+        <div></div>
+        <button class="bell" type="button" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 21h4"/></svg>
+        </button>
+      </header>
+
+      <main id="view-talent-dash">
+        <h1>Good morning, James</h1>
+        <section class="t-stats">
+          <article class="card pad"><div class="card-head"><span class="icon-chip blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8"/></svg>
+          </span> Application</div><div class="big">2</div></article>
+          <article class="card pad"><div class="card-head"><span class="icon-chip green">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5l8 4 8-4v14l-8 4z"/></svg>
+          </span> Learning</div><div class="big">3</div></article>
+          <article class="card pad"><div class="card-head"><span class="icon-chip" style="background:#f3e8ff;color:#7c3aed">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 11h6M12 8v6"/></svg>
+          </span> Assessment</div><div class="big">3</div></article>
+          <article class="card pad t-stat-events" id="dash-events-card"><div class="card-head"><span class="icon-chip" style="background:#fff7ed;color:#ea580c">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+          </span> Events</div><div class="big" id="dash-event-count">0</div></article>
+        </section>
+        <div class="t-dash-row">
+          <article class="card pad grow t-apps">
+            <div class="t-app-tabs">
+              <button class="tab active" type="button">Application</button>
+              <button class="tab" type="button">Courses</button>
+              <button class="tab" type="button">Programs</button>
+              <button class="tab" type="button">Assessment</button>
+            </div>
+            <div class="t-app-cards">
+              <article class="t-app-card">
+                <div class="t-app-org"><span class="av dark">J</span><div><strong>Jamesbond Inc.</strong><small>Community Social Services</small></div></div>
+                <div class="t-app-role"><strong>testiing</strong><small>Remote • Contract • 1–3 years</small></div>
+                <div class="t-app-foot"><span class="pill public">Applied</span><button class="text-link" type="button">View application</button></div>
+              </article>
+              <article class="t-app-card">
+                <div class="t-app-org"><span class="av dark">J</span><div><strong>Jamesbond Inc.</strong><small>Information Technology</small></div></div>
+                <div class="t-app-role"><strong>QA Testing Architect</strong><small>Remote • Freelance • 5–7 years</small></div>
+                <div class="t-app-foot"><span class="pill public">Applied</span><button class="text-link" type="button">View application</button></div>
+              </article>
+            </div>
+          </article>
+          <div class="t-dash-side">
+            <article class="card pad t-profile-cta">
+              <div class="t-ring">10%</div>
+              <div>
+                <strong>Complete your profile</strong>
+                <p>Just a few more steps.</p>
+              </div>
+              <button class="btn btn-ghost" type="button">Continue ›</button>
+            </article>
+            <article class="card pad today-event" id="dash-today">
+              <div class="spread"><span>Today’s event</span><button class="text-link" type="button" data-tnav="calendar">View all</button></div>
+              <strong id="dash-today-date">Sep 15, 2026</strong>
+              <div id="dash-today-list"></div>
+            </article>
+          </div>
+        </div>
+      </main>
+
+      <main class="hidden" id="view-talent-list">
+        <h1>Events</h1>
+        <p class="lede" id="t-list-lede">Discover festivals, meetups and workshops you can join</p>
+        <div class="toolbar t-event-tabs-bar">
+          <div class="tabs" id="t-event-tabs">
+            <button class="tab active" type="button" data-ttab="Discover">Discover</button>
+            <button class="tab" type="button" data-ttab="Going">Going</button>
+            <button class="tab" type="button" data-ttab="Past">Past</button>
+          </div>
+          <div class="tools">
+            <button class="btn btn-ghost" type="button" id="t-subscribe">Subscribe to host calendar</button>
+          </div>
+        </div>
+        <div class="t-toolbar">
+          <input class="search t-search" id="t-search" placeholder="Search event" />
+          <div class="filter-root">
+            <button class="filter-btn" id="t-filter-btn" type="button">Filter by</button>
+            <div class="menu hidden" id="t-filter-menu">
+              <div class="filter-row">
+                <button type="button" data-tsub="loc">Location <span>›</span></button>
+                <div class="submenu hidden" id="t-sub-loc">
+                  <button type="button" data-tloc="Physical">Physical</button>
+                  <button type="button" data-tloc="Virtual">Virtual</button>
+                  <button type="button" data-tloc="Hybrid">Hybrid</button>
+                </div>
+              </div>
+              <div class="filter-row">
+                <button type="button" data-tsub="date">Date <span>›</span></button>
+                <div class="submenu hidden" id="t-sub-date">
+                  <button type="button" data-tdate="Today">Today</button>
+                  <button type="button" data-tdate="This week">This week</button>
+                  <button type="button" data-tdate="This month">This month</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="t-cards" id="talent-cards"></div>
+        <div class="empty-card hidden" id="talent-empty"></div>
+      </main>
+
+      <main class="hidden" id="view-talent-event"></main>
+
+      <main class="hidden" id="view-talent-calendar">
+        <h1>Calendar</h1>
+        <p class="lede">View and track your events, meetings and availability</p>
+        <div class="cal-bar t-cal-bar">
+          <button class="seg" id="t-today" type="button">Today</button>
+          <div class="chev-group">
+            <button class="seg" id="t-cal-prev" type="button">‹</button>
+            <button class="seg" id="t-cal-next" type="button">›</button>
+          </div>
+          <button class="range-pill" id="t-range-label" type="button">September 2026</button>
+          <div class="spacer"></div>
+          <div class="legend">
+            <span><i class="dot up"></i>Upcoming</span>
+            <span><i class="dot on"></i>Ongoing</span>
+            <span><i class="dot en"></i>Ended</span>
+          </div>
+          <select class="seg" id="t-cal-mode">
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month" selected>Month</option>
+            <option value="year">Year</option>
+          </select>
+          <div class="view-toggle">
+            <button id="t-btn-grid" type="button" title="Grid">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+            </button>
+            <button class="active" id="t-btn-cal" type="button" title="Calendar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+            </button>
+          </div>
+        </div>
+        <div id="t-cal-grid-wrap" class="hidden">
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab active" type="button" data-tstat="Upcoming">Upcoming <span class="count" id="tc-up">0</span></button>
+              <button class="tab" type="button" data-tstat="Ongoing">Ongoing <span class="count" id="tc-on">0</span></button>
+              <button class="tab" type="button" data-tstat="Ended">Ended <span class="count" id="tc-en">0</span></button>
+            </div>
+            <div class="tools">
+              <div class="filter-root">
+                <button class="filter-btn" id="tc-filter-btn" type="button">Filter by</button>
+                <div class="menu hidden" id="tc-filter-menu">
+                  <div class="filter-row">
+                    <button type="button" data-tcsub="loc">Location <span>›</span></button>
+                    <div class="submenu hidden" id="tc-sub-loc">
+                      <button type="button" data-tcloc="Physical">Physical</button>
+                      <button type="button" data-tcloc="Virtual">Virtual</button>
+                      <button type="button" data-tcloc="Hybrid">Hybrid</button>
+                    </div>
+                  </div>
+                  <div class="filter-row">
+                    <button type="button" data-tcsub="date">Date <span>›</span></button>
+                    <div class="submenu hidden" id="tc-sub-date">
+                      <button type="button" data-tcdate="Today">Today</button>
+                      <button type="button" data-tcdate="This week">This week</button>
+                      <button type="button" data-tcdate="This month">This month</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <input class="search" id="tc-search" placeholder="Search event" />
+              <div class="view-toggle">
+                <button id="t-btn-grid-2" type="button" title="Grid">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>
+                </button>
+                <button id="t-btn-cal-2" type="button" title="Calendar">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="t-cards" id="t-cal-cards"></div>
+          <div class="empty-card hidden" id="t-cal-empty"></div>
+        </div>
+        <div class="cal-layout" id="t-cal-layout">
+          <div class="cal-times hidden" id="t-cal-times"></div>
+          <div class="cal-main">
+            <div class="week-grid hidden" id="t-week-grid"></div>
+            <div class="day-grid hidden" id="t-day-grid"></div>
+            <div id="t-cal-month"></div>
+            <div class="year hidden" id="t-year-wrap"></div>
+          </div>
+        </div>
+      </main>
+
+      <main class="hidden" id="view-talent-settings">
+        <h1>Settings</h1>
+        <p class="lede">Notification channels for Events. SMS is consent-only.</p>
+        <article class="card pad settings-card">
+          <h3>Events</h3>
+          <p class="hint">Event invitations, reminders, and changes</p>
+          <label class="switch">In-app
+            <input id="set-inapp" type="checkbox" checked /><span class="slider"></span>
+          </label>
+          <label class="switch">Email
+            <input id="set-email" type="checkbox" checked /><span class="slider"></span>
+          </label>
+          <label class="switch">SMS
+            <input id="set-sms" type="checkbox" /><span class="slider"></span>
+          </label>
+          <p class="hint" id="set-sms-hint">SMS only sends if you opted in here. Invalid numbers skip SMS; email still goes.</p>
+          <button class="btn btn-primary" type="button" id="set-save">Save</button>
+        </article>
+      </main>
+    </div>
+  </div>
+
+
+  <div id="meet-shell" class="hidden">
+    <div id="waiting-room" class="waiting-room hidden">
+      <article class="card pad">
+        <h1>Waiting room</h1>
+        <p id="waiting-copy">The host will let you in when they are ready.</p>
+        <p class="hint">Access is checked again here — cancelled, unpaid, pending, and waitlisted people stay out.</p>
+        <div class="cta-row">
+          <button class="btn btn-ghost" type="button" id="waiting-leave">Leave</button>
+          <button class="btn btn-primary hidden" type="button" id="waiting-admit">Admit James</button>
+        </div>
+      </article>
+    </div>
+    <div id="meet-live">
+      <div class="meet-top">
+        <strong id="meet-title">Enum Meet</strong>
+        <span class="pill live" id="meet-rec">Not recording</span>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost" type="button" id="meet-hand">Raise hand</button>
+        <button class="btn btn-ghost" type="button" id="meet-record">Record</button>
+        <button class="btn btn-ghost" type="button" id="meet-breakout">Breakouts</button>
+        <button class="btn btn-ghost" type="button" id="meet-lock">Lock</button>
+        <button class="btn btn-primary" type="button" id="meet-end">End session</button>
+        <button class="btn btn-ghost" type="button" id="meet-leave">Leave</button>
+      </div>
+      <div class="meet-av">
+        <button class="btn btn-ghost" type="button" id="meet-cam">Camera on</button>
+        <button class="btn btn-ghost" type="button" id="meet-mic">Mic on</button>
+        <button class="btn btn-ghost" type="button" id="meet-share">Share screen</button>
+        <span class="hint" id="meet-av-hint"></span>
+      </div>
+      <div class="meet-body">
+        <div class="meet-stage" id="meet-stage"></div>
+        <aside class="meet-side">
+          <h3>Roster</h3>
+          <div id="meet-roster"></div>
+          <div id="breakout-panel" class="hidden">
+            <h3>Breakouts</h3>
+            <p class="hint">N rooms. Empty rooms create no Community group.</p>
+            <div class="guest-row">
+              <input id="bo-count" type="number" min="1" max="6" value="2" />
+              <button class="btn btn-primary" type="button" id="bo-open">Open rooms</button>
+            </div>
+            <div id="bo-rooms"></div>
+            <button class="btn btn-ghost" type="button" id="bo-close">Close and return to main</button>
+          </div>
+          <h3>Chat</h3>
+          <div class="meet-chat" id="meet-chat"></div>
+          <div class="guest-row">
+            <input id="meet-msg" placeholder="Message the room" />
+            <button class="btn btn-primary" type="button" id="meet-send">Send</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div id="community-shell" class="hidden">
+    <aside class="rail">
+      <div class="mark">JI</div>
+      <nav class="rail-nav">
+        <button class="rail-item" type="button">Home</button>
+        <button class="rail-item active" type="button">Community</button>
+      </nav>
+    </aside>
+    <main class="app">
+      <div class="top"><div><h1>Community</h1><p>Groups created from Meet rosters — never from RSVP lists.</p></div></div>
+      <div id="community-groups"></div>
+    </main>
+  </div>
+
+
+  <button class="chat" type="button" title="Support" id="support-chat" aria-label="Support">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg>
+  </button>
+  <div class="toast hidden" id="support-toast">Support chat is global chrome — not part of Events.</div>
+
+  <div class="overlay hidden" id="overlay">
+    <div class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <header>
+        <h2 id="modal-title">Create event</h2>
+        <button class="x" id="close-modal" type="button" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        </button>
+      </header>
+      <div class="body">
+        <div class="seg-vis">
+          <button type="button" class="on" data-v="Public">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+            Public
+          </button>
+          <button type="button" data-v="Private">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            Private
+          </button>
+        </div>
+        <div class="upload">
+          <div class="upload-left">
+            <div class="upload-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V6M8 9l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            </div>
+            <div>
+              <p>Upload your image</p>
+              <small>PNG or JPEG format • Max. 5MB</small>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="upload-btn" type="button">Upload</button>
+          <input id="file" type="file" accept="image/png,image/jpeg" hidden />
+        </div>
+        <img id="preview" class="hidden preview-img" alt="" />
+
+        <div class="field">
+          <label>Event name <span class="req">*</span></label>
+          <input id="f-name" type="text" placeholder="Enter event title" />
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <select id="f-cat">
+            <option value="">Select a category</option>
+            <option>Education</option>
+            <option>Entertainment</option>
+            <option>Business</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Description</label>
+          <textarea id="f-desc" placeholder="Type details of this event"></textarea>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Start date/time <span class="req">*</span></label>
+            <input id="f-start" type="datetime-local" />
+          </div>
+          <div class="field">
+            <label>End date/time <span class="req">*</span></label>
+            <input id="f-end" type="datetime-local" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <div class="loc-seg">
+            <button type="button" class="on" data-l="Physical">Physical</button>
+            <button type="button" data-l="Virtual">Virtual</button>
+            <button type="button" data-l="Hybrid">Hybrid</button>
+          </div>
+        </div>
+        <div class="field" id="place-wrap">
+          <label>Place</label>
+          <input id="f-place" type="text" placeholder="Venue or address" />
+        </div>
+        <div class="field hidden" id="url-wrap">
+          <label>Meeting link</label>
+          <input id="f-url" type="text" placeholder="https://" />
+        </div>
+        <div class="field">
+          <label>Add guest</label>
+          <div class="guest-row">
+            <input id="f-guest" type="email" placeholder="guest@company.com" />
+            <button class="btn btn-ghost" id="add-guest" type="button">Add</button>
+          </div>
+          <div class="chips" id="guest-chips"></div>
+        </div>
+        <div class="field">
+          <label>Reminders</label>
+          <select id="f-remind">
+            <option>None</option>
+            <option>15 minutes before</option>
+            <option>1 hour before</option>
+            <option>1 day before</option>
+          </select>
+        </div>
+        <div class="field hidden" id="host-wrap">
+          <label class="switch">Allow Enum to host your meeting
+            <input id="f-host" type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <hr class="form-rule" />
+        <p class="form-kicker">Registration (door)</p>
+        <div class="row2">
+          <div class="field">
+            <label>Capacity</label>
+            <input id="f-cap" type="number" min="1" placeholder="Unlimited" />
+          </div>
+          <div class="field">
+            <label>Guest list</label>
+            <select id="f-privacy">
+              <option value="hidden">Hidden</option>
+              <option value="count">Count only</option>
+              <option value="visible">Visible to guests</option>
+            </select>
+          </div>
+        </div>
+        <label class="switch">Require approval
+          <input id="f-approval" type="checkbox" /><span class="slider"></span>
+        </label>
+        <label class="switch" style="margin-top:10px">Waitlist when full
+          <input id="f-waitlist" type="checkbox" /><span class="slider"></span>
+        </label>
+        <div class="field" style="margin-top:14px">
+          <label>Ticket</label>
+          <select id="f-ticket">
+            <option value="free">Free</option>
+            <option value="paid">Paid — paywall at Join</option>
+          </select>
+        </div>
+        <div class="field hidden" id="price-wrap">
+          <label>Price (NGN)</label>
+          <input id="f-price" type="number" min="0" placeholder="5000" />
+        </div>
+        <div class="field">
+          <label>SMS reminders</label>
+          <select id="f-sms">
+            <option>Off — email and in-app only</option>
+            <option>24h and 1h (opted-in only)</option>
+          </select>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Registration window</label>
+            <select id="f-regwin">
+              <option value="open">Open now</option>
+              <option value="closed">Closed</option>
+              <option value="opens">Opens on</option>
+            </select>
+          </div>
+          <div class="field hidden" id="opens-wrap">
+            <label>Opens on</label>
+            <input id="f-opens" type="datetime-local" />
+          </div>
+        </div>
+        <label class="switch">Allow early Join
+          <input id="f-early" type="checkbox" /><span class="slider"></span>
+        </label>
+        <label class="switch" style="margin-top:10px">Waiting room
+          <input id="f-waiting" type="checkbox" /><span class="slider"></span>
+        </label>
+        <div class="field" style="margin-top:14px">
+          <label>Series / program</label>
+          <input id="f-series" type="text" placeholder="LTX weekly (optional)" />
+        </div>
+        <p class="form-kicker">Questions</p>
+        <p class="hint">Short, long, single, multiple, acknowledgement. Required questions block reserve. Reorder in the list.</p>
+        <div id="q-builder"></div>
+        <button class="btn btn-ghost" type="button" id="q-add">Add question</button>
+        <div class="field" style="margin-top:14px">
+          <label>Reminder preview</label>
+          <p class="hint" id="remind-preview">Email includes time with TZ and Join or venue. SMS is short and never includes a Join URL unless they are Going.</p>
+        </div>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" id="cancel-modal" type="button">Cancel</button>
+        <button class="btn btn-primary" id="submit-btn" type="button" disabled>Create event</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="reserve-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Confirm reservation</h2><button class="x" type="button" id="reserve-x">×</button></header>
+      <div class="body">
+        <p id="reserve-copy"></p>
+        <div id="reserve-questions"></div>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="reserve-no">Cancel</button>
+        <button class="btn btn-primary" type="button" id="reserve-yes">Yes, reserve</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="reserve-ok-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Reservation successful</h2><button class="x" type="button" id="reserve-ok-x">×</button></header>
+      <div class="body">
+        <p id="reserve-ok-copy"></p>
+        <p class="hint">Reserved. This is on your Enum calendar.</p>
+        <div class="cta-row">
+          <button class="btn btn-ghost" type="button" id="reserve-ok-ics">Download .ics</button>
+          <button class="btn btn-ghost" type="button" id="reserve-ok-gcal">Add to Google</button>
+          <button class="btn btn-ghost" type="button" id="reserve-ok-apple">Add to Apple</button>
+          <button class="btn btn-ghost" type="button" id="reserve-ok-outlook">Add to Outlook</button>
+        </div>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="reserve-ok-cal">View calendar</button>
+        <button class="btn btn-primary" type="button" id="reserve-ok-done">Done</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="confirm-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2 id="confirm-title">Confirm</h2><button class="x" type="button" id="confirm-x">×</button></header>
+      <div class="body"><p id="confirm-copy"></p></div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="confirm-no">Back</button>
+        <button class="btn btn-primary" type="button" id="confirm-yes">Confirm</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="ticket-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Ticket</h2><button class="x" type="button" id="ticket-x">×</button></header>
+      <div class="body" id="ticket-body"></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="invite-overlay">
+    <div class="modal" role="dialog">
+      <header><h2>Invite</h2><button class="x" type="button" id="invite-x">×</button></header>
+      <div class="body">
+        <label>Emails</label>
+        <textarea id="invite-emails" placeholder="one@org.com, two@org.com"></textarea>
+        <label>Message (optional)</label>
+        <textarea id="invite-msg" placeholder="Join us."></textarea>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="invite-no">Cancel</button>
+        <button class="btn btn-primary" type="button" id="invite-yes">Send</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="blast-overlay">
+    <div class="modal" role="dialog">
+      <header><h2>Send message</h2><button class="x" type="button" id="blast-x">×</button></header>
+      <div class="body">
+        <label>Segment</label>
+        <select id="blast-seg"></select>
+        <p class="hint" id="blast-count"></p>
+        <label>Message</label>
+        <textarea id="blast-msg" placeholder="Reminder: we start on time."></textarea>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="blast-no">Cancel</button>
+        <button class="btn btn-primary" type="button" id="blast-yes">Send</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="import-overlay">
+    <div class="modal" role="dialog">
+      <header><h2>Import CSV</h2><button class="x" type="button" id="import-x">×</button></header>
+      <div class="body">
+        <p class="hint">Columns: name, email, optional role. Duplicates skip. Invalid emails stay out of the good-row list.</p>
+        <div class="cta-row">
+          <button class="btn btn-ghost" type="button" id="import-template">Download template</button>
+          <button class="btn btn-ghost" type="button" id="import-pick">Upload CSV</button>
+        </div>
+        <input id="import-file" type="file" accept=".csv,text/csv" hidden />
+        <label>Import as</label>
+        <select id="import-as">
+          <option value="Invited">Invited</option>
+          <option value="Going">Going</option>
+        </select>
+        <div id="import-preview" class="import-preview"></div>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="import-no">Cancel</button>
+        <button class="btn btn-primary" type="button" id="import-yes">Import good rows</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="embed-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Embed</h2><button class="x" type="button" id="embed-x">×</button></header>
+      <div class="body">
+        <p class="hint">Reserve in the widget uses the same door as Feature 1. Embed cannot bypass access.</p>
+        <textarea id="embed-code" readonly rows="5"></textarea>
+        <button class="btn btn-primary" type="button" id="embed-copy">Copy embed</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="feedback-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Leave feedback</h2><button class="x" type="button" id="feedback-x">×</button></header>
+      <div class="body">
+        <p id="feedback-copy">How was this session?</p>
+        <label>Rating</label>
+        <select id="feedback-rating">
+          <option>5 — excellent</option>
+          <option>4</option>
+          <option>3</option>
+          <option>2</option>
+          <option>1</option>
+        </select>
+        <label>Note</label>
+        <textarea id="feedback-note" placeholder="Optional"></textarea>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="feedback-no">Cancel</button>
+        <button class="btn btn-primary" type="button" id="feedback-yes">Submit</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="paywall-overlay">
+    <div class="modal small" role="dialog">
+      <header><h2>Payment incomplete</h2><button class="x" type="button" id="paywall-x">×</button></header>
+      <div class="body">
+        <p id="paywall-copy">Payment is incomplete, so you can’t join yet.</p>
+      </div>
+      <footer>
+        <button class="btn btn-ghost" type="button" id="paywall-no">Back</button>
+        <button class="btn btn-primary" type="button" id="paywall-yes">Pay now</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
